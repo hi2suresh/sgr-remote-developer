@@ -11,12 +11,14 @@ import ResultsCount from './ResultsCount';
 import Sidebar, { SidebarTop } from './Sidebar';
 import SortingControls from './SortingControls';
 import JobList from './JobList';
-import { useJobItems } from '../lib/hooks';
+import { useActiveId, useJobItem, useJobItems } from '../lib/hooks';
 import { useState } from 'react';
 
 function App() {
   const [searchText, setSearchText] = useState('');
-  const [jobItems, isLoading] = useJobItems(searchText);
+  const { jobItemsSliced, isLoading, totalNumberOfResults } =
+    useJobItems(searchText);
+
   return (
     <>
       <Background />
@@ -30,10 +32,10 @@ function App() {
       <Container>
         <Sidebar>
           <SidebarTop>
-            <ResultsCount />
+            <ResultsCount totalNumberOfResults={totalNumberOfResults} />
             <SortingControls />
           </SidebarTop>
-          <JobList jobItems={jobItems} isLoading={isLoading} />
+          <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
 
           <PaginationControls />
         </Sidebar>
