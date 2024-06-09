@@ -4,6 +4,7 @@ export type JobItem = {
   title: string;
   company: string;
   daysAgo: number;
+  relevanceScore: number;
 };
 
 export type JobItemExpanded = JobItem & {
@@ -17,3 +18,6 @@ export type JobItemExpanded = JobItem & {
   reviews: string[];
   salary: string;
 };
+
+export type SortBy = 'relevant' | 'recent';
+export type PageDirection = 'next' | 'previous';
