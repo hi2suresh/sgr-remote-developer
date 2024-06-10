@@ -27,7 +27,7 @@ function App() {
   const totalNumberOfResults = jobItems ? jobItems.length : 0;
   const totalNumberOfPages = totalNumberOfResults / RESULTS_PER_PAGE;
   const jobItemsSorted =
-    jobItems?.sort((a, b) => {
+    [...(jobItems || [])].sort((a, b) => {
       if (sortBy === 'relevant') {
         return b.relevanceScore - a.relevanceScore;
       } else {
@@ -51,6 +51,7 @@ function App() {
     setCurrentPage(1);
     setSortBy(newSortBy);
   };
+
   return (
     <>
       <Background />
