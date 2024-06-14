@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import { JobItem, JobItemExpanded } from './types';
 import { BASE_API_URL } from './constants';
 import { useQuery } from '@tanstack/react-query';
@@ -34,7 +34,7 @@ export function useJobItem(id: number | null) {
   );
   const jobItem = data?.jobItem;
   const isLoading = isInitialLoading;
-  return [jobItem, isLoading];
+  return [jobItem, isLoading] as const;
 }
 
 type JobItemsApiResponse = {
@@ -95,4 +95,18 @@ export function useActiveId() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
   return activeId;
+}
+
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<SetStateAction<T>>] {
+  const [value, setValue] = useState(() =>
+    JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))
+  );
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key]);
+  return [value, setValue];
 }

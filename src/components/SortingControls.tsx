@@ -1,7 +1,7 @@
 import { SortBy } from '../lib/types';
 
 type SortingControlsProps = {
-  onClick: (newSort: string) => void;
+  onClick: (newSort: SortBy) => void;
   sortBy: SortBy;
 };
 export default function SortingControls({
