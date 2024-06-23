@@ -1,20 +1,25 @@
-import { useActiveIdContext } from '../contexts/ActiveIdContextProvider';
-import { useJobItem } from '../lib/hooks';
-import BookmarkIcon from './BookmarkIcon';
-import Spinner from './Spinner';
+import { useActiveIdContext, useJobItem } from "../lib/hooks";
+import BookmarkIcon from "./BookmarkIcon";
+import Spinner from "./Spinner";
 
 export default function JobItemContent() {
   const { activeId } = useActiveIdContext();
-  const [jobItem, isLoading] = useJobItem(activeId);
+  const { jobItem, isLoading } = useJobItem(activeId);
 
-  if (isLoading) return <LoadingContent />;
-  if (!jobItem) return <EmptyJobContent />;
+  if (isLoading) {
+    return <LoadingJobContent />;
+  }
+
+  if (!jobItem) {
+    return <EmptyJobContent />;
+  }
+
   return (
     <section className="job-details">
       <div>
-        <img src={`${jobItem.coverImgURL}`} alt="#" />
+        <img src={jobItem.coverImgURL} alt="#" />
 
-        <a className="apply-btn" href={`${jobItem.companyURL}`} target="_blank">
+        <a className="apply-btn" href={jobItem.companyURL} target="_blank">
           Apply
         </a>
 
@@ -38,12 +43,12 @@ export default function JobItemContent() {
                 {jobItem.duration}
               </p>
               <p className="job-info__extra">
-                <i className="fa-solid fa-money-bill job-info__extra-icon"></i>$
+                <i className="fa-solid fa-money-bill job-info__extra-icon"></i>
                 {jobItem.salary}
               </p>
               <p className="job-info__extra">
-                <i className="fa-solid fa-location-dot job-info__extra-icon"></i>{' '}
-                Global
+                <i className="fa-solid fa-location-dot job-info__extra-icon"></i>{" "}
+                {jobItem.location}
               </p>
             </div>
           </div>
@@ -85,11 +90,21 @@ export default function JobItemContent() {
 
         <footer className="job-details__footer">
           <p className="job-details__footer-text">
-            If possible, please reference that you found the job on{' '}
+            If possible, please reference that you found the job on{" "}
             <span className="u-bold">rmtDev</span>, we would really appreciate
             it!
           </p>
         </footer>
+      </div>
+    </section>
+  );
+}
+
+function LoadingJobContent() {
+  return (
+    <section className="job-details">
+      <div>
+        <Spinner />
       </div>
     </section>
   );
@@ -105,16 +120,6 @@ function EmptyJobContent() {
             Start by searching for any technology your ideal job is working with
           </p>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function LoadingContent() {
-  return (
-    <section className="job-details">
-      <div>
-        <Spinner />
       </div>
     </section>
   );

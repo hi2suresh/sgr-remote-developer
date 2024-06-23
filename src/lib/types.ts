@@ -3,21 +3,22 @@ export type JobItem = {
   badgeLetters: string;
   title: string;
   company: string;
-  daysAgo: number;
+  date: string;
   relevanceScore: number;
+  daysAgo: number;
 };
 
 export type JobItemExpanded = JobItem & {
-  companyURL: string;
-  coverImgURL: string;
   description: string;
+  qualifications: string[];
+  reviews: string[];
   duration: string;
   location: string;
-  qualifications: string[];
-  relevanceScore: number;
-  reviews: string[];
   salary: string;
+  coverImgURL: string;
+  companyURL: string;
 };
 
-export type SortBy = 'relevant' | 'recent';
-export type PageDirection = 'next' | 'previous';
+export type PageDirection = "next" | "previous";
+
+export type SortBy = "relevant" | "recent";

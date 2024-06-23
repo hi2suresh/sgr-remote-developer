@@ -1,51 +1,46 @@
-import { createContext, useContext } from 'react';
-import { useJobItems, useLocalStorage } from '../lib/hooks';
-import { JobItemExpanded } from '../lib/types';
+import { createContext } from "react";
+import { useJobItems, useLocalStorage } from "../lib/hooks";
+import { JobItemExpanded } from "../lib/types";
 
-type BookMarksContextProps = {
-  bookMarkIds: number[];
-  handleBookMarkToggle: (id: number) => void;
-  bookMarkedJobItems: JobItemExpanded[];
+type BookmarksContext = {
+  bookmarkedIds: number[];
+  handleToggleBookmark: (id: number) => void;
+  bookmarkedJobItems: JobItemExpanded[];
   isLoading: boolean;
 };
-export const BookMarksContext = createContext<BookMarksContextProps | null>(
-  null
-);
 
-export default function BookMarksContextProvider({
+export const BookmarksContext = createContext<BookmarksContext | null>(null);
+
+export default function BookmarksContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [bookMarkIds, setBookMarkIds] = useLocalStorage<number[]>(
-    'bookMarkIds',
+  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<number[]>(
+    "bookmarkedIds",
     []
   );
-  const { jobItems: bookMarkedJobItems, isLoading } = useJobItems(bookMarkIds);
-  const handleBookMarkToggle = (id: number) => {
-    if (bookMarkIds.includes(id)) {
-      setBookMarkIds((prev) => prev.filter((item) => item !== id));
+  const { jobItems: bookmarkedJobItems, isLoading } =
+    useJobItems(bookmarkedIds);
+
+  const handleToggleBookmark = (id: number) => {
+    if (bookmarkedIds.includes(id)) {
+      setBookmarkedIds((prev) => prev.filter((item) => item !== id));
     } else {
-      setBookMarkIds((prev) => [...prev, id]);
+      setBookmarkedIds((prev) => [...prev, id]);
     }
   };
 
   return (
-    <BookMarksContext.Provider
+    <BookmarksContext.Provider
       value={{
-        bookMarkIds,
-        handleBookMarkToggle,
-        bookMarkedJobItems,
+        bookmarkedIds,
+        handleToggleBookmark,
+        bookmarkedJobItems,
         isLoading,
       }}
     >
       {children}
-    </BookMarksContext.Provider>
+    </BookmarksContext.Provider>
   );
-}
-
-export function useBookMarkContext() {
-  const result = useContext(BookMarksContext);
-  if (!result) throw Error(`Bookmark context is null`);
-  return result;
 }
